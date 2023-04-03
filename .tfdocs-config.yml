@@ -14,10 +14,6 @@ sections:
 
 content: ""
 
-recursive:
-  enabled: true
-  path: modules
-
 output:
   file: "README.md" 
   
