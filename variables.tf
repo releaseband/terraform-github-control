@@ -1,12 +1,12 @@
 variable "repositories" {
   type = map(object({
-    visibility             = optional(string, "private")
-    auto_init              = optional(bool, true)
-    archived               = optional(bool, false)
-    description            = optional(string, "")
-    homepage_url           = optional(string, "")
-    is_template            = optional(bool, false)
-    teams                  = optional(list(string))
+    visibility                      = optional(string, "private")
+    auto_init                       = optional(bool, true)
+    archived                        = optional(bool, false)
+    description                     = optional(string, "")
+    homepage_url                    = optional(string, "")
+    is_template                     = optional(bool, false)
+    teams                           = optional(list(string))
     required_status_checks_contexts = optional(list(string))
     pages = optional(object({
       branch = optional(string)
