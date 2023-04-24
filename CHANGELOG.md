@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/releaseband/terraform-github-control/compare/v0.1.0...v0.2.0) (2023-04-24)
+
+
+### Features
+
+* **main.tf:** add aws iam user, access key, policy and github secrets for aws access key id and secret access key ([5e2f98e](https://github.com/releaseband/terraform-github-control/commit/5e2f98e60995e6e0da9c5481ca2af8f5ec6667b6))
+* **main.tf:** add support for branch protection on versions branch pattern for each repository ([f26e48b](https://github.com/releaseband/terraform-github-control/commit/f26e48b84f91ef27eb67bb4484d427a6a39b4fb7))
+* **main.tf:** add support for organization secrets for github actions ([f26e48b](https://github.com/releaseband/terraform-github-control/commit/f26e48b84f91ef27eb67bb4484d427a6a39b4fb7))
+* **main.tf:** add support for repository templates ([f26e48b](https://github.com/releaseband/terraform-github-control/commit/f26e48b84f91ef27eb67bb4484d427a6a39b4fb7))
+* **README.md:** add AWS IAM access key and secret as GitHub Actions secrets ([5e2f98e](https://github.com/releaseband/terraform-github-control/commit/5e2f98e60995e6e0da9c5481ca2af8f5ec6667b6))
+* **variables.tf:** add new optional variables to repositories object and add organization_secrets variable. ([56d4a66](https://github.com/releaseband/terraform-github-control/commit/56d4a667a6cef1873b5b7ca966ff12a8daf789a6))
+
 ## [0.1.0](https://github.com/releaseband/terraform-github-control/compare/v0.0.1...v0.1.0) (2023-04-03)
 
 
