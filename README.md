@@ -4,27 +4,19 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.64.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | >= 5.18.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.64.0 |
 | <a name="provider_github"></a> [github](#provider\_github) | 5.18.3 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_iam_access_key.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_access_key) | resource |
-| [aws_iam_policy_document.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_document) | resource |
-| [aws_iam_user.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
-| [aws_iam_user_policy.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
 | [github_actions_organization_secret.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_organization_secret) | resource |
-| [github_actions_secret.aws_iam_access_key_id](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
-| [github_actions_secret.aws_iam_access_key_secret](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
 | [github_branch_default.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
 | [github_branch_protection.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection) | resource |
 | [github_branch_protection.versions](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection) | resource |
