@@ -156,29 +156,6 @@ resource "github_team_repository" "main" {
   permission = "push"
 }
 
-# generate ssh key for each repository
-# TODO : use github actions secret instead of tls_private_key
-# resource "tls_private_key" "main" {
-#   for_each  = var.repositories
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
-
-# resource "github_repository_deploy_key" "main" {
-#   for_each   = var.repositories
-#   repository = github_repository.main[each.key].name
-#   title      = "actions"
-#   key        = tls_private_key.main[each.key].public_key_openssh
-#   read_only  = false
-# }
-
-# resource "github_actions_secret" "main" {
-#   for_each        = var.repositories
-#   repository      = github_repository.main[each.key].name
-#   secret_name     = "ACTIONS_SSH_KEY"
-#   plaintext_value = tls_private_key.main[each.key].private_key_pem
-# }
-
 resource "github_actions_organization_secret" "main" {
   for_each        = var.organization_secrets
   secret_name     = each.key
@@ -186,5 +163,57 @@ resource "github_actions_organization_secret" "main" {
   plaintext_value = each.value
 }
 
+#create aws iam for use kms in readonly
+resource "aws_iam_user" "main" {
+  name = "github-control"
+  tags = {
+    Name = "github-control"
+  }
+}
+
+resource "aws_iam_access_key" "main" {
+  user = aws_iam_user.main.name
+}
+
+resource "aws_iam_user_policy_attachment" "main" {
+  user = aws_iam_user.main.name
+  policy_arn = aws_iam_policy.main.arn
+
+}
 
 
+resource "aws_iam_policy" "main" {
+  name   = "github-control"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+
+
+resource "github_actions_secret" "aws_iam_access_key_id" {
+  repository      = "github-settings"
+  secret_name     = "AWS_ACCESS_KEY_ID"
+  plaintext_value = aws_iam_access_key.main.id
+}
+
+resource "github_actions_secret" "aws_iam_access_key_secret" {
+  repository      = "github-settings"
+  secret_name     = "AWS_SECRET_ACCESS_KEY"
+  plaintext_value = aws_iam_access_key.main.secret
+}
