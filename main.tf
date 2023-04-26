@@ -143,8 +143,20 @@ locals {
       }
     ]
   ])
+  repositories_secrets_flatten = flatten([
+    for i, item in var.repositories : [
+      for data in setproduct([item], keys(item.action_secrets)) : {
+        repository      = "${i}"
+        secret_name     = data[1]
+        plaintext_value = lookup(item.action_secrets, data[1])
+      }
+    ]
+  ])
   repositories_teams = {
     for i, item in local.repositories_teams_flatten : "${item.repository}-${item.team}" => item
+  }
+  repositories_secrets = {
+    for i, item in local.repositories_secrets_flatten : "${item.repository}-${lower(item.secret_name)}" => item
   }
 }
 
@@ -162,3 +174,13 @@ resource "github_actions_organization_secret" "main" {
   visibility      = "all"
   plaintext_value = each.value
 }
+
+resource "github_actions_secret" "main" {
+  for_each        = local.repositories_secrets
+  repository      = each.value.repository
+  secret_name     = each.value.secret_name
+  plaintext_value = each.value.plaintext_value
+}
+
+
+

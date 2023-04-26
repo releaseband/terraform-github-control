@@ -8,6 +8,7 @@ variable "repositories" {
     is_template                     = optional(bool, false)
     teams                           = optional(list(string))
     required_status_checks_contexts = optional(list(string))
+    action_secrets                  = optional(map(string), {})
     pages = optional(object({
       branch = optional(string)
       path   = optional(string)
