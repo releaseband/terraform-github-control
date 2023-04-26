@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/releaseband/terraform-github-control/compare/v0.2.0...v0.3.0) (2023-04-26)
+
+
+### Features
+
+* add support for creating GitHub Actions secrets ([edd1f9a](https://github.com/releaseband/terraform-github-control/commit/edd1f9a729f825a8de82ff775e839bd9ef2c9a4d))
+
 ## [0.2.0](https://github.com/releaseband/terraform-github-control/compare/v0.1.0...v0.2.0) (2023-04-24)
 
 
