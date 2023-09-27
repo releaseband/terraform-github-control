@@ -1,23 +1,24 @@
 resource "github_repository" "main" {
-  for_each               = var.repositories
-  auto_init              = each.value["auto_init"]
-  name                   = each.key
-  visibility             = each.value["visibility"]
-  archived               = each.value["archived"]
-  description            = each.value["description"]
-  has_downloads          = true
-  has_issues             = true
-  has_projects           = true
-  has_wiki               = false
-  delete_branch_on_merge = true
-  vulnerability_alerts   = true
-  allow_merge_commit     = true
-  allow_rebase_merge     = true
-  allow_squash_merge     = true
-  allow_auto_merge       = false
-  allow_update_branch    = true
-  is_template            = each.value["is_template"]
-  homepage_url           = each.value["homepage_url"]
+  for_each                              = var.repositories
+  auto_init                             = each.value["auto_init"]
+  name                                  = each.key
+  visibility                            = each.value["visibility"]
+  archived                              = each.value["archived"]
+  description                           = each.value["description"]
+  has_downloads                         = true
+  has_issues                            = true
+  has_projects                          = true
+  has_wiki                              = false
+  delete_branch_on_merge                = true
+  vulnerability_alerts                  = true
+  allow_merge_commit                    = true
+  allow_rebase_merge                    = true
+  allow_squash_merge                    = true
+  allow_auto_merge                      = false
+  allow_update_branch                   = true
+  members_can_fork_private_repositories = true
+  is_template                           = each.value["is_template"]
+  homepage_url                          = each.value["homepage_url"]
   dynamic "pages" {
     for_each = each.value["pages"] == null ? [] : [each.value["pages"]]
     content {
@@ -181,6 +182,3 @@ resource "github_actions_secret" "main" {
   secret_name     = each.value.secret_name
   plaintext_value = each.value.plaintext_value
 }
-
-
-
