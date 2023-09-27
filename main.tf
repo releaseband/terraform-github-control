@@ -16,7 +16,7 @@ resource "github_repository" "main" {
   allow_squash_merge                    = true
   allow_auto_merge                      = false
   allow_update_branch                   = true
-  members_can_fork_private_repositories = true
+  members_can_fork_private_repositories = false
   is_template                           = each.value["is_template"]
   homepage_url                          = each.value["homepage_url"]
   dynamic "pages" {
