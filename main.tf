@@ -87,7 +87,7 @@ resource "github_organization_settings" "main" {
   billing_email                                                = var.billing_email
   has_organization_projects                                    = true
   has_repository_projects                                      = true
-  default_repository_permission                                = "read"
+  default_repository_permission                                = "none"
   members_can_create_repositories                              = false
   members_can_create_public_repositories                       = false
   members_can_create_private_repositories                      = false
