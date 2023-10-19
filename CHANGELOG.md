@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/releaseband/terraform-github-control/compare/v0.3.0...v0.4.0) (2023-10-19)
+
+
+### Features
+
+* **main.tf:** add members_can_fork_private_repositories attribute to github_repository resource to allow members to fork private repositories ([588710b](https://github.com/releaseband/terraform-github-control/commit/588710b655217ee905cb1c80a459c4c0b7787a54))
+
+
+### Bug Fixes
+
+* **main.tf:** change default_repository_permission from 'read' to 'none' to enhance security by restricting default access to repositories ([9e0a6ef](https://github.com/releaseband/terraform-github-control/commit/9e0a6efe811df52555b74fbb6869095e993a8f8e))
+* **main.tf:** disable members_can_fork_private_repositories to enhance security by preventing unauthorized forks of private repositories ([50b0b2f](https://github.com/releaseband/terraform-github-control/commit/50b0b2f04162141c9c5695cd07e055515d830512))
+
 ## [0.3.0](https://github.com/releaseband/terraform-github-control/compare/v0.2.0...v0.3.0) (2023-04-26)
 
 
