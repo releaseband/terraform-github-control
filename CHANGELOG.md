@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/releaseband/terraform-github-control/compare/v0.4.0...v0.4.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* **main.tf:** add a condition for check value 'archive' ([8669fc1](https://github.com/releaseband/terraform-github-control/commit/8669fc1aa735c9b1d40399905f84489668ffed29))
+
 ## [0.4.0](https://github.com/releaseband/terraform-github-control/compare/v0.3.0...v0.4.0) (2023-10-19)
 
 
