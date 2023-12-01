@@ -41,7 +41,7 @@ resource "github_branch_default" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each   = var.repositories
+  for_each   = { for k, v in var.repositories : k => v if v.archived != true }
   repository = github_repository.main[each.key].name
   branch     = "main"
 }
