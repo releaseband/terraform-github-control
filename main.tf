@@ -165,7 +165,7 @@ resource "github_team_repository" "main" {
   for_each   = local.repositories_teams
   team_id    = github_team.main[each.value.team].id
   repository = github_repository.main[each.value.repository].name
-  permission = "push"
+  permission = github_team.main[each.value.team].name == "readonly-team" ? "pull" : "push"
 }
 
 resource "github_actions_organization_secret" "main" {
