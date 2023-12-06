@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/releaseband/terraform-github-control/compare/v0.4.1...v0.4.2) (2023-12-06)
+
+
+### Bug Fixes
+
+* **main.tf:** add readonly-team ([0f0a763](https://github.com/releaseband/terraform-github-control/commit/0f0a7633078b6a731e532fd999623703f40c17eb))
+
 ## [0.4.1](https://github.com/releaseband/terraform-github-control/compare/v0.4.0...v0.4.1) (2023-12-01)
 
 
