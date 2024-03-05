@@ -56,7 +56,3 @@ resource "github_team_settings" "main" {
     notify       = true
   }
 }
-# outputs
-output "github_teams" {
-  value = github_team.main
-}
