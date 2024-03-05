@@ -1,5 +1,5 @@
 resource "github_organization_settings" "main" {
-  billing_email                                                = var.config.billing_email
+  billing_email                                                = var.billing_email
   has_organization_projects                                    = true
   has_repository_projects                                      = true
   default_repository_permission                                = "none"
@@ -20,23 +20,23 @@ resource "github_organization_settings" "main" {
   secret_scanning_push_protection_enabled_for_new_repositories = false
 }
 resource "github_actions_organization_secret" "main" {
-  for_each        = var.config.organization_secrets
+  for_each        = var.organization_secrets
   secret_name     = each.key
   visibility      = "all"
   plaintext_value = each.value
 }
 resource "github_membership" "main" {
-  for_each = var.config.members
+  for_each = var.members
   username = each.key
   role     = each.value
 }
 resource "github_team" "main" {
-  for_each = var.config.teams
+  for_each = var.teams
   name     = each.key
   privacy  = "closed"
 }
 resource "github_team_members" "main" {
-  for_each = var.config.teams
+  for_each = var.teams
   team_id  = github_team.main[each.key].id
 
   dynamic "members" {
@@ -48,7 +48,7 @@ resource "github_team_members" "main" {
   }
 }
 resource "github_team_settings" "main" {
-  for_each = var.config.teams
+  for_each = var.teams
   team_id  = github_team.main[each.key].id
   review_request_delegation {
     algorithm    = "ROUND_ROBIN"
