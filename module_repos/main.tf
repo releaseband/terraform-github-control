@@ -1,10 +1,9 @@
 resource "github_repository" "main" {
-  for_each               = var.config.repositories
-  auto_init              = each.value["auto_init"]
-  name                   = each.key
-  visibility             = each.value["visibility"]
-  archived               = each.value["archived"]
-  description            = each.value["description"]
+  auto_init              = var.auto_init
+  name                   = var.name
+  visibility             = var.visibility
+  archived               = var.archived
+  description            = var.description
   has_downloads          = true
   has_issues             = true
   has_projects           = true
@@ -16,10 +15,10 @@ resource "github_repository" "main" {
   allow_squash_merge     = true
   allow_auto_merge       = false
   allow_update_branch    = true
-  is_template            = each.value["is_template"]
-  homepage_url           = each.value["homepage_url"]
+  is_template            = var.is_template
+  homepage_url           = var.homepage_url
   dynamic "pages" {
-    for_each = each.value["pages"] == null ? [] : [each.value["pages"]]
+    for_each = var.pages == null ? [] : [var.pages]
     content {
       source {
         branch = try(pages.value["branch"], "main")
@@ -28,7 +27,7 @@ resource "github_repository" "main" {
     }
   }
   dynamic "template" {
-    for_each = each.value["template"] == null ? [] : [each.value["template"]]
+    for_each = var.template == null ? [] : [var.template]
     content {
       owner      = try(template.value["owner"], "")
       repository = try(template.value["repository"], "")
@@ -40,8 +39,8 @@ resource "github_branch_default" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each   = { for k, v in var.config.repositories : k => v if v.archived != true }
-  repository = github_repository.main[each.key].name
+  count      = var.archived != true ? 1 : 0
+  repository = github_repository.main.name
   branch     = "main"
 }
 
@@ -49,8 +48,7 @@ resource "github_branch_protection" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each      = var.config.repositories
-  repository_id = github_repository.main[each.key].name
+  repository_id = github_repository.main.name
   pattern       = "main"
   required_pull_request_reviews {
     dismiss_stale_reviews           = false
@@ -60,53 +58,44 @@ resource "github_branch_protection" "main" {
     restrict_dismissals             = false
   }
   dynamic "required_status_checks" {
-    for_each = each.value["required_status_checks_contexts"] == null ? [] : [each.value["required_status_checks_contexts"]]
+    for_each = var.required_status_checks_contexts == null ? [] : [var.required_status_checks_contexts]
     content {
-      contexts = each.value["required_status_checks_contexts"]
+      contexts = var.required_status_checks_contexts
       strict   = false
     }
   }
 }
 
 resource "github_branch_protection" "versions" {
-  for_each      = var.config.repositories
-  repository_id = github_repository.main[each.key].name
+  repository_id = github_repository.main.name
   pattern       = "v*.*.*"
 }
-locals {
-  repositories_teams_flatten = flatten([
-    for i, item in var.config.repositories : [
-      for pair in setproduct([item], item.teams == null ? [] : item.teams) : {
-        repository = "${i}"
-        team       = pair[1]
-      }
-    ]
-  ])
-  repositories_secrets_flatten = flatten([
-    for i, item in var.config.repositories : [
-      for data in setproduct([item], keys(item.action_secrets)) : {
-        repository      = "${i}"
-        secret_name     = data[1]
-        plaintext_value = lookup(item.action_secrets, data[1])
-      }
-    ]
-  ])
-  repositories_teams = {
-    for i, item in local.repositories_teams_flatten : "${item.repository}-${item.team}" => item
-  }
-  repositories_secrets = {
-    for i, item in local.repositories_secrets_flatten : "${item.repository}-${lower(item.secret_name)}" => item
-  }
+
+data "github_team" "main" {
+  for_each = can(var.teams) && var.teams != null ? { for team in var.teams : team => team } : {}
+  slug     = each.key
 }
+
 resource "github_team_repository" "main" {
-  for_each   = local.repositories_teams
-  team_id    = var.config.teams[each.value.team].id
-  repository = github_repository.main[each.value.repository].name
-  permission = var.config.teams[each.value.team].name == "readonly-team" ? "pull" : "push"
+  depends_on = [
+    github_repository.main
+  ]
+  for_each   = { for team in data.github_team.main : team.slug => team  }
+  team_id    = each.value.id
+  repository = github_repository.main.name
+  permission = each.value.name == "readonly-team" ? "pull" : "push"
 }
+
 resource "github_actions_secret" "main" {
-  for_each        = local.repositories_secrets
-  repository      = each.value.repository
-  secret_name     = each.value.secret_name
-  plaintext_value = each.value.plaintext_value
+  for_each        = var.action_secrets
+  repository      = github_repository.main.name
+  secret_name     = each.key
+  plaintext_value = each.value
+}
+
+resource "github_repository_collaborator" "main" {
+  for_each = var.collaborators
+  repository = github_repository.main.name
+  username   = each.key
+  permission = each.value
 }
