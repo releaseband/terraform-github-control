@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/releaseband/terraform-github-control/compare/v0.4.2...v0.5.0) (2024-03-12)
+
+
+### Features
+
+* add collaborators in repo vars ([40c356b](https://github.com/releaseband/terraform-github-control/commit/40c356bbf28b51c8c0286180d10cd8b3bc292077))
+* add new and update main README.md files, remove output from module_global/main.tf ([189b472](https://github.com/releaseband/terraform-github-control/commit/189b47211109c7ad525b35d72e6cb23f92f50de6))
+* divided into submodules ([f717f15](https://github.com/releaseband/terraform-github-control/commit/f717f153c695262dd1e3603a24a0c440abaf9ce9))
+* refactoring module repo ([95e9a16](https://github.com/releaseband/terraform-github-control/commit/95e9a163bb5b9cc94d8d762d6b3b26e1458deb0f))
+* refactoring, update variables ([fb69459](https://github.com/releaseband/terraform-github-control/commit/fb694599e5e559dba31befd61298d3de96588017))
+* updated doc ([c4971f6](https://github.com/releaseband/terraform-github-control/commit/c4971f6a75802b46af26d45cde931ef006fb33f5))
+
 ## [0.4.2](https://github.com/releaseband/terraform-github-control/compare/v0.4.1...v0.4.2) (2023-12-06)
 
 
