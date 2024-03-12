@@ -7,6 +7,7 @@ variable "repositories" {
     homepage_url                    = optional(string, "")
     is_template                     = optional(bool, false)
     teams                           = optional(list(string))
+    collaborators                   = optional(map(string), {})
     required_status_checks_contexts = optional(list(string))
     action_secrets                  = optional(map(string), {})
     pages = optional(object({
@@ -19,9 +20,6 @@ variable "repositories" {
     }))
   }))
 }
-
-
-
 
 variable "members" {
   type = map(string)
