@@ -30,7 +30,7 @@ variable "teams" {
 }
 variable "collaborators" {
   type    = map(string)
-  default = {} 
+  default = {}
 }
 variable "required_status_checks_contexts" {
   type = list(string)
@@ -53,3 +53,15 @@ variable "template" {
   })
   default = null
 }
+variable "protected_branch" {
+  type = bool
+}
+variable "repository_ruleset" {
+  type = bool
+}
+# variable "bypass_actors" {
+#   type = list(object({
+#     name       = string
+#     actor_type = string
+#   }))
+# }

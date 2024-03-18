@@ -8,6 +8,13 @@ variable "repositories" {
     is_template                     = optional(bool, false)
     teams                           = optional(list(string))
     collaborators                   = optional(map(string), {})
+    protected_branch                = optional(bool, false)
+    repository_ruleset              = optional(bool, false)
+    # bypass_actors                   = optional(list(object({
+    #   name       = string
+    #   actor_type = string
+    #   actor_id   = string
+    # })))
     required_status_checks_contexts = optional(list(string))
     action_secrets                  = optional(map(string), {})
     pages = optional(object({
