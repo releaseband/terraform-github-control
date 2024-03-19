@@ -93,7 +93,7 @@ resource "github_repository_ruleset" "main" {
   target      = "branch"
   enforcement = "active"
   dynamic "bypass_actors" {
-    for_each = var.bypass_actors
+    for_each = var.bypass_actors != null ? var.bypass_actors : {}
     content {
       actor_type  = bypass_actors.value["actor_type"]
       actor_id    = bypass_actors.value["actor_type"] == "Team" ? data.github_team.main[bypass_actors.value["actor"]].id : bypass_actors.value["actor_type"] == "RepositoryRole" ? bypass_actors.value["role_id"] : data.github_app.main[bypass_actors.key].id
