@@ -1,20 +1,21 @@
 variable "repositories" {
   type = map(object({
-    visibility                      = optional(string, "private")
-    auto_init                       = optional(bool, true)
-    archived                        = optional(bool, false)
-    description                     = optional(string, "")
-    homepage_url                    = optional(string, "")
-    is_template                     = optional(bool, false)
-    teams                           = optional(list(string))
-    collaborators                   = optional(map(string), {})
-    protected_branch                = optional(bool, false)
-    repository_ruleset              = optional(bool, false)
-    # bypass_actors                   = optional(list(object({
-    #   name       = string
-    #   actor_type = string
-    #   actor_id   = string
-    # })))
+    visibility         = optional(string, "private")
+    auto_init          = optional(bool, true)
+    archived           = optional(bool, false)
+    description        = optional(string, "")
+    homepage_url       = optional(string, "")
+    is_template        = optional(bool, false)
+    teams              = optional(list(string))
+    collaborators      = optional(map(string), {})
+    protected_branch   = optional(bool, false)
+    repository_ruleset = optional(bool, false)
+    bypass_actors = optional(map(object({
+      bypass_mode = optional(string, "always")
+      actor_type  = optional(string)
+      actor       = optional(string)
+      role_id     = optional(number, 2)
+    })))
     required_status_checks_contexts = optional(list(string))
     action_secrets                  = optional(map(string), {})
     pages = optional(object({

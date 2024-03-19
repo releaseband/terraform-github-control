@@ -59,9 +59,18 @@ variable "protected_branch" {
 variable "repository_ruleset" {
   type = bool
 }
-# variable "bypass_actors" {
-#   type = list(object({
-#     name       = string
-#     actor_type = string
-#   }))
-# }
+variable "bypass_actors" {
+  type = map(object({
+    bypass_mode = string
+    actor_type  = string
+    actor       = string
+    role_id     = number
+  }))
+}
+
+# OrganizationAdmin
+# RepositoryRole (This is the actor type, the following are the base repository roles and their associated IDs.)
+# maintain -> 2
+# write -> 4
+# admin -> 5
+# OrganizationAdmin -> 1

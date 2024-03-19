@@ -3,10 +3,10 @@ data "github_team" "main" {
   slug     = each.key
 }
 
-# data "github_app" "name" {
-#   for_each = { for actor in var.bypass_actors : actor.name => actor }  
-#   slug     = each.key
-# }
+data "github_app" "main" {
+  for_each = can(var.bypass_actors) && var.bypass_actors != null ? { for k, v in var.bypass_actors : k => v if can(v["actor"]) && v["actor_type"] == "Integration" && v["actor"] != null } : {}
+  slug     = each.value["actor"]
+}
 
 resource "github_repository" "main" {
   auto_init              = var.auto_init
@@ -83,33 +83,23 @@ resource "github_branch_protection" "versions" {
   pattern       = each.key
 }
 
-# locals {
-#   team_actors = [for actor in var.bypass_actors : actor if actor.actor_type == "Team"]
-#   app_actors  = [for actor in var.bypass_actors : actor if actor.actor_type == "App"]
-#   # role_actors = [for actor in var.bypass_actors : actor if actor.actor_type == "Role"]
-
-#   team_ids = { for actor in local.team_actors : actor.name => data.github_team.team[actor.name].id }
-#   app_ids  = { for actor in local.app_actors : actor.name => data.github_app.app[actor.name].id }
-#   # role_ids = { for actor in local.role_actors : actor.name => data.github_role.role[actor.name].id }
-# }
-
 resource "github_repository_ruleset" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each      = var.repository_ruleset ? toset(["main"]) : toset([])
+  for_each    = var.repository_ruleset ? toset(["main"]) : toset([])
   name        = each.key
   repository  = github_repository.main.name
   target      = "branch"
   enforcement = "active"
-  # dynamic "bypass_actors" {
-  #   for_each   = { for actor in var.bypass_actors : actor.name => actor }
-  #   content {
-  #     actor_type = bypass_actors.value.actor_type
-  #     actor_id    = bypass_actors.value.actor_type == "Team" ? local.team_ids[bypass_actors.key] : bypass_actors.value.actor_type == "App" ? local.app_ids[bypass_actors.key] : local.role_ids[bypass_actors.key]
-  #     bypass_mode = "always"
-  #   }
-  # }
+  dynamic "bypass_actors" {
+    for_each = var.bypass_actors
+    content {
+      actor_type  = bypass_actors.value["actor_type"]
+      actor_id    = bypass_actors.value["actor_type"] == "Team" ? data.github_team.main[bypass_actors.value["actor"]].id : bypass_actors.value["actor_type"] == "RepositoryRole" ? bypass_actors.value["role_id"] : data.github_app.main[bypass_actors.key].id
+      bypass_mode = bypass_actors.value["bypass_mode"]
+    }
+  }
   conditions {
     ref_name {
       include = ["~DEFAULT_BRANCH"]
@@ -124,7 +114,7 @@ resource "github_repository_ruleset" "main" {
         dynamic "required_check" {
           for_each = var.required_status_checks_contexts
           content {
-           context = required_check.value
+            context = required_check.value
           }
         }
         strict_required_status_checks_policy = false
