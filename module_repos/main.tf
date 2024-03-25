@@ -58,7 +58,7 @@ resource "github_branch_protection" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each      = var.protected_branch ? toset(["main"]) : toset([])
+  for_each      = var.protected_branch ? toset(["main", "v*.*.*"]) : toset([]) # 
   repository_id = github_repository.main.name
   pattern       = each.key
   required_pull_request_reviews {
@@ -75,12 +75,6 @@ resource "github_branch_protection" "main" {
       strict   = false
     }
   }
-}
-
-resource "github_branch_protection" "versions" {
-  for_each      = var.protected_branch ? toset(["v*.*.*"]) : toset([])
-  repository_id = github_repository.main.name
-  pattern       = each.key
 }
 
 resource "github_repository_ruleset" "main" {
