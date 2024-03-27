@@ -1,3 +1,13 @@
+data "github_team" "main" {
+  for_each = can(var.teams) && var.teams != null ? { for team in var.teams : team => team } : {}
+  slug     = each.key
+}
+
+data "github_app" "main" {
+  for_each = can(var.bypass_actors) && var.bypass_actors != null ? { for k, v in var.bypass_actors : k => v if can(v["actor"]) && v["actor_type"] == "Integration" && v["actor"] != null } : {}
+  slug     = each.value["actor"]
+}
+
 resource "github_repository" "main" {
   auto_init              = var.auto_init
   name                   = var.name
@@ -48,8 +58,9 @@ resource "github_branch_protection" "main" {
   depends_on = [
     github_repository.main
   ]
+  for_each      = var.protected_branch ? toset(["main", "v*.*.*"]) : toset([]) # 
   repository_id = github_repository.main.name
-  pattern       = "main"
+  pattern       = each.key
   required_pull_request_reviews {
     dismiss_stale_reviews           = false
     require_code_owner_reviews      = false
@@ -66,21 +77,58 @@ resource "github_branch_protection" "main" {
   }
 }
 
-resource "github_branch_protection" "versions" {
-  repository_id = github_repository.main.name
-  pattern       = "v*.*.*"
+resource "github_repository_ruleset" "main" {
+  depends_on = [
+    github_repository.main
+  ]
+  for_each    = var.repository_ruleset ? toset(["main"]) : toset([])
+  name        = each.key
+  repository  = github_repository.main.name
+  target      = "branch"
+  enforcement = "active"
+  dynamic "bypass_actors" {
+    for_each = var.bypass_actors != null ? var.bypass_actors : {}
+    content {
+      actor_type  = bypass_actors.value["actor_type"]
+      actor_id    = bypass_actors.value["actor_type"] == "Team" ? data.github_team.main[bypass_actors.value["actor"]].id : bypass_actors.value["actor_type"] == "RepositoryRole" ? bypass_actors.value["role_id"] : data.github_app.main[bypass_actors.key].id
+      bypass_mode = bypass_actors.value["bypass_mode"]
+    }
+  }
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+  }
+  rules {
+    deletion = true
+    dynamic "required_status_checks" {
+      for_each = can(var.required_status_checks_contexts) && var.required_status_checks_contexts == null ? [] : [var.required_status_checks_contexts]
+      content {
+        dynamic "required_check" {
+          for_each = var.required_status_checks_contexts
+          content {
+            context = required_check.value
+          }
+        }
+        strict_required_status_checks_policy = false
+      }
+    }
+    pull_request {
+      require_code_owner_review       = true
+      required_approving_review_count = 0
+    }
+    non_fast_forward = true
+  }
 }
 
-data "github_team" "main" {
-  for_each = can(var.teams) && var.teams != null ? { for team in var.teams : team => team } : {}
-  slug     = each.key
-}
+
 
 resource "github_team_repository" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each   = { for team in data.github_team.main : team.slug => team  }
+  for_each   = { for team in data.github_team.main : team.slug => team }
   team_id    = each.value.id
   repository = github_repository.main.name
   permission = each.value.name == "readonly-team" ? "pull" : "push"
@@ -94,7 +142,7 @@ resource "github_actions_secret" "main" {
 }
 
 resource "github_repository_collaborator" "main" {
-  for_each = var.collaborators
+  for_each   = var.collaborators
   repository = github_repository.main.name
   username   = each.key
   permission = each.value
