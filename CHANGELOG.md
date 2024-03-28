@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/releaseband/terraform-github-control/compare/v0.5.0...v0.6.0) (2024-03-28)
+
+
+### Features
+
+* add repository_ruleset ([7fc69f9](https://github.com/releaseband/terraform-github-control/commit/7fc69f949b8b663d0e2d385cdd3321df8abb1050))
+* added bypass_actors ([d1fe745](https://github.com/releaseband/terraform-github-control/commit/d1fe745de56ed81b9f6ca7d09ad39725ff3dfca7))
+* remove github_branch_protection.version ([c1fb79f](https://github.com/releaseband/terraform-github-control/commit/c1fb79f5bc00e735bb923fd9e11d9207564639dd))
+* terraform fmt ([475d863](https://github.com/releaseband/terraform-github-control/commit/475d86320b3bb61370b244904089bd40daff4d02))
+
+
+### Bug Fixes
+
+* update condition for bypass_actors ([21e6735](https://github.com/releaseband/terraform-github-control/commit/21e67350f7fcdcb640d5d1ddc3ae19dab0d1dc35))
+
 ## [0.5.0](https://github.com/releaseband/terraform-github-control/compare/v0.4.2...v0.5.0) (2024-03-12)
 
 
