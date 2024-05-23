@@ -26,6 +26,10 @@ variable "repositories" {
       owner      = optional(string)
       repository = optional(string)
     }))
+    preparing_environments = optional(bool, false)
+    env_secrets_dev        = optional(map(string), {})
+    env_secrets_stage      = optional(map(string), {})
+    env_secrets_prod       = optional(map(string), {})
   }))
 }
 

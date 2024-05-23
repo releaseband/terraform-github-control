@@ -147,3 +147,32 @@ resource "github_repository_collaborator" "main" {
   username   = each.key
   permission = each.value
 }
+
+resource "github_repository_environment" "main" {
+  for_each    = var.preparing_environments ? { for preparing_environments in var.environments : preparing_environments => true } : {}
+  repository = github_repository.main.name
+  environment = each.key
+}
+
+
+resource "github_actions_environment_secret" "dev" {
+  for_each = var.env_secrets_dev != null ? var.env_secrets_dev : {}
+  environment     = "dev"
+  repository = github_repository.main.name
+  secret_name     = each.key
+  plaintext_value = each.value
+}
+resource "github_actions_environment_secret" "stage" {
+  for_each = var.env_secrets_stage != null ? var.env_secrets_stage : {}
+  environment     = "stage"
+  repository = github_repository.main.name
+  secret_name     = each.key
+  plaintext_value = each.value
+}
+resource "github_actions_environment_secret" "prod" {
+  for_each = var.env_secrets_prod != null ? var.env_secrets_prod : {}
+  environment     = "prod"
+  repository = github_repository.main.name
+  secret_name     = each.key
+  plaintext_value = each.value
+}

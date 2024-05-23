@@ -67,6 +67,26 @@ variable "bypass_actors" {
     role_id     = number
   }))
 }
+variable "preparing_environments" {
+  type = bool
+  default = false
+}
+variable "environments" {
+  type = list(string)
+  default = [ "dev","stage", "prod" ]
+}
+variable "env_secrets_dev" {
+  type = map(string)
+  default = {}
+}
+variable "env_secrets_stage" {
+  type = map(string)
+  default = {}
+}
+variable "env_secrets_prod" {
+  type = map(string)
+  default = {}
+}
 
 # OrganizationAdmin
 # RepositoryRole (This is the actor type, the following are the base repository roles and their associated IDs.)
