@@ -17,4 +17,8 @@ module "repo" {
   teams                           = each.value["teams"]
   collaborators                   = each.value["collaborators"]
   action_secrets                  = each.value["action_secrets"]
+  preparing_environments          = each.value["preparing_environments"]
+  env_secrets_dev                 = each.value["env_secrets_dev"]
+  env_secrets_stage               = each.value["env_secrets_stage"]
+  env_secrets_prod                = each.value["env_secrets_prod"]
 }
