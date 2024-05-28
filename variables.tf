@@ -9,7 +9,7 @@ variable "repositories" {
     teams              = optional(list(string))
     collaborators      = optional(map(string), {})
     protected_branch   = optional(bool, false)
-    repository_ruleset = optional(bool, false)
+    repository_ruleset = optional(bool, true)
     bypass_actors = optional(map(object({
       bypass_mode = optional(string, "always")
       actor_type  = optional(string)

@@ -54,12 +54,16 @@ resource "github_branch_default" "main" {
   repository = github_repository.main.name
   branch     = "main"
 }
-
+# condition: if protected_branch=true then repository_ruleset=false  - forced.
+locals {
+  repository_ruleset=var.protected_branch ? false:var.repository_ruleset
+}
 resource "github_branch_protection" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each      = var.protected_branch ? toset(["main", "v*.*.*"]) : toset([]) # 
+  # if protected_branch=true and repository_ruleset=false , then go ahead
+  for_each      = var.protected_branch && local.repository_ruleset == false ? toset(["main", "v*.*.*"]) : toset([]) # 
   repository_id = github_repository.main.name
   pattern       = each.key
   required_pull_request_reviews {
@@ -77,12 +81,12 @@ resource "github_branch_protection" "main" {
     }
   }
 }
-
 resource "github_repository_ruleset" "main" {
   depends_on = [
     github_repository.main
   ]
-  for_each    = var.repository_ruleset ? toset(["main"]) : toset([])
+   # if protected_branch=false (default value) and repository_ruleset=true (default value) , then go ahead
+  for_each    = var.protected_branch == false && var.repository_ruleset ? toset(["main"]) : toset([])
   name        = each.key
   repository  = github_repository.main.name
   target      = "branch"
