@@ -9,24 +9,25 @@ data "github_app" "main" {
 }
 
 resource "github_repository" "main" {
-  auto_init              = var.auto_init
-  name                   = var.name
-  visibility             = var.visibility
-  archived               = var.archived
-  description            = var.description
-  has_downloads          = true
-  has_issues             = true
-  has_projects           = true
-  has_wiki               = false
-  delete_branch_on_merge = true
-  vulnerability_alerts   = true
-  allow_merge_commit     = true
-  allow_rebase_merge     = true
-  allow_squash_merge     = true
-  allow_auto_merge       = false
-  allow_update_branch    = true
-  is_template            = var.is_template
-  homepage_url           = var.homepage_url
+  auto_init                   = var.auto_init
+  name                        = var.name
+  visibility                  = var.visibility
+  archived                    = var.archived
+  description                 = var.description
+  has_downloads               = true
+  has_issues                  = true
+  has_projects                = true
+  has_wiki                    = false
+  delete_branch_on_merge      = true
+  vulnerability_alerts        = true
+  allow_merge_commit          = true
+  allow_rebase_merge          = true
+  allow_squash_merge          = true
+  allow_auto_merge            = false
+  allow_update_branch         = true
+  is_template                 = var.is_template
+  homepage_url                = var.homepage_url
+  web_commit_signoff_required = true
   dynamic "pages" {
     for_each = var.pages == null ? [] : [var.pages]
     content {
@@ -150,29 +151,29 @@ resource "github_repository_collaborator" "main" {
 
 resource "github_repository_environment" "main" {
   for_each    = var.preparing_environments ? { for preparing_environments in var.environments : preparing_environments => true } : {}
-  repository = github_repository.main.name
+  repository  = github_repository.main.name
   environment = each.key
 }
 
 
 resource "github_actions_environment_secret" "dev" {
-  for_each = var.env_secrets_dev != null ? var.env_secrets_dev : {}
+  for_each        = var.env_secrets_dev != null ? var.env_secrets_dev : {}
   environment     = "dev"
-  repository = github_repository.main.name
+  repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
 resource "github_actions_environment_secret" "stage" {
-  for_each = var.env_secrets_stage != null ? var.env_secrets_stage : {}
+  for_each        = var.env_secrets_stage != null ? var.env_secrets_stage : {}
   environment     = "stage"
-  repository = github_repository.main.name
+  repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
 resource "github_actions_environment_secret" "prod" {
-  for_each = var.env_secrets_prod != null ? var.env_secrets_prod : {}
+  for_each        = var.env_secrets_prod != null ? var.env_secrets_prod : {}
   environment     = "prod"
-  repository = github_repository.main.name
+  repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
