@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/releaseband/terraform-github-control/compare/v0.7.0...v0.7.1) (2024-05-28)
+
+
+### Bug Fixes
+
+* set web_commit_signoff_required to true ([2f821b9](https://github.com/releaseband/terraform-github-control/commit/2f821b95743220320074935a57ac32e85094aa8e))
+
 ## [0.7.0](https://github.com/releaseband/terraform-github-control/compare/v0.6.0...v0.7.0) (2024-05-23)
 
 
