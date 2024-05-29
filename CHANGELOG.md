@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/releaseband/terraform-github-control/compare/v0.7.1...v0.8.0) (2024-05-28)
+
+
+### Features
+
+* add conditions, update repository_ruleset default value on true ([5927d96](https://github.com/releaseband/terraform-github-control/commit/5927d96c79b0e6048cac0feb3792f585204648c3))
+
+
+### Bug Fixes
+
+* move signoff to repo conf ([5cc966c](https://github.com/releaseband/terraform-github-control/commit/5cc966c10bdd3758ca7fd25c0cf2b740d53cfd1b))
+
 ## [0.7.1](https://github.com/releaseband/terraform-github-control/compare/v0.7.0...v0.7.1) (2024-05-28)
 
 
