@@ -69,7 +69,7 @@ variable "bypass_actors" {
 }
 variable "preparing_environments" {
   type = bool
-  default = false
+  default = true
 }
 variable "environments" {
   type = list(string)
