@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/releaseband/terraform-github-control/compare/v0.8.0...v0.8.1) (2024-06-26)
+
+
+### Bug Fixes
+
+* turn on preparing_environments by default ([4de41e4](https://github.com/releaseband/terraform-github-control/commit/4de41e49608fa3bdd6ad5fa83f7d4415571b9556))
+
 ## [0.8.0](https://github.com/releaseband/terraform-github-control/compare/v0.7.1...v0.8.0) (2024-05-28)
 
 
