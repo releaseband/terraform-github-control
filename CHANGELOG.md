@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/releaseband/terraform-github-control/compare/v0.8.1...v0.9.0) (2024-08-23)
+
+
+### Features
+
+* add new resource github_actions_environment_variable for dev,stage and prod environments ([586e6e6](https://github.com/releaseband/terraform-github-control/commit/586e6e692b9b94744a745823eb3083729091da58))
+
 ## [0.8.1](https://github.com/releaseband/terraform-github-control/compare/v0.8.0...v0.8.1) (2024-06-26)
 
 
