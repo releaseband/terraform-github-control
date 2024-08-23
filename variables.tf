@@ -30,6 +30,9 @@ variable "repositories" {
     env_secrets_dev        = optional(map(string), {})
     env_secrets_stage      = optional(map(string), {})
     env_secrets_prod       = optional(map(string), {})
+    env_variables_dev      = optional(map(string), {})
+    env_variables_stage    = optional(map(string), {})
+    env_variables_prod     = optional(map(string), {})
   }))
 }
 

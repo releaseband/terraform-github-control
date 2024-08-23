@@ -21,4 +21,7 @@ module "repo" {
   env_secrets_dev                 = each.value["env_secrets_dev"]
   env_secrets_stage               = each.value["env_secrets_stage"]
   env_secrets_prod                = each.value["env_secrets_prod"]
+  env_variables_dev               = each.value["env_variables_dev"]
+  env_variables_stage             = each.value["env_variables_stage"]
+  env_variables_prod              = each.value["env_variables_prod"]
 }
