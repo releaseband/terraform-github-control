@@ -56,7 +56,7 @@ resource "github_branch_default" "main" {
 }
 # condition: if protected_branch=true then repository_ruleset=false  - forced.
 locals {
-  repository_ruleset=var.protected_branch ? false:var.repository_ruleset
+  repository_ruleset = var.protected_branch ? false : var.repository_ruleset
 }
 resource "github_branch_protection" "main" {
   depends_on = [
@@ -85,7 +85,7 @@ resource "github_repository_ruleset" "main" {
   depends_on = [
     github_repository.main
   ]
-   # if protected_branch=false (default value) and repository_ruleset=true (default value) , then go ahead
+  # if protected_branch=false (default value) and repository_ruleset=true (default value) , then go ahead
   for_each    = var.protected_branch == false && var.repository_ruleset ? toset(["main"]) : toset([])
   name        = each.key
   repository  = github_repository.main.name
@@ -167,6 +167,13 @@ resource "github_actions_environment_secret" "dev" {
   secret_name     = each.key
   plaintext_value = each.value
 }
+resource "github_actions_environment_variable" "dev" {
+  for_each      = var.env_variables_dev != null ? var.env_variables_dev : {}
+  environment   = "dev"
+  repository    = github_repository.main.name
+  variable_name = each.key
+  value         = each.value
+}
 resource "github_actions_environment_secret" "stage" {
   for_each        = var.env_secrets_stage != null ? var.env_secrets_stage : {}
   environment     = "stage"
@@ -174,10 +181,24 @@ resource "github_actions_environment_secret" "stage" {
   secret_name     = each.key
   plaintext_value = each.value
 }
+resource "github_actions_environment_variable" "stage" {
+  for_each      = var.env_variables_stage != null ? var.env_variables_stage : {}
+  environment   = "stage"
+  repository    = github_repository.main.name
+  variable_name = each.key
+  value         = each.value
+}
 resource "github_actions_environment_secret" "prod" {
   for_each        = var.env_secrets_prod != null ? var.env_secrets_prod : {}
   environment     = "prod"
   repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
+}
+resource "github_actions_environment_variable" "prod" {
+  for_each      = var.env_variables_prod != null ? var.env_variables_prod : {}
+  environment   = "prod"
+  repository    = github_repository.main.name
+  variable_name = each.key
+  value         = each.value
 }
