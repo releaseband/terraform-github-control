@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/releaseband/terraform-github-control/compare/v0.9.0...v0.9.1) (2025-02-11)
+
+
+### Bug Fixes
+
+* use nonsensitive for env secrets and variables ([051090a](https://github.com/releaseband/terraform-github-control/commit/051090a640e5baabe78f5d2a78ebce91144d64e4))
+
 ## [0.9.0](https://github.com/releaseband/terraform-github-control/compare/v0.8.1...v0.9.0) (2024-08-23)
 
 
