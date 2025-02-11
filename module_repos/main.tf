@@ -161,42 +161,42 @@ resource "github_repository_environment" "main" {
 
 
 resource "github_actions_environment_secret" "dev" {
-  for_each        = var.env_secrets_dev != null ? var.env_secrets_dev : {}
+  for_each        = nonsensitive(var.env_secrets_dev != null ? var.env_secrets_dev : {})
   environment     = "dev"
   repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
 resource "github_actions_environment_variable" "dev" {
-  for_each      = var.env_variables_dev != null ? var.env_variables_dev : {}
+  for_each      = nonsensitive(var.env_variables_dev != null ? var.env_variables_dev : {})
   environment   = "dev"
   repository    = github_repository.main.name
   variable_name = each.key
   value         = each.value
 }
 resource "github_actions_environment_secret" "stage" {
-  for_each        = var.env_secrets_stage != null ? var.env_secrets_stage : {}
+  for_each        = nonsensitive(var.env_secrets_stage != null ? var.env_secrets_stage : {})
   environment     = "stage"
   repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
 resource "github_actions_environment_variable" "stage" {
-  for_each      = var.env_variables_stage != null ? var.env_variables_stage : {}
+  for_each      = nonsensitive(var.env_variables_stage != null ? var.env_variables_stage : {})
   environment   = "stage"
   repository    = github_repository.main.name
   variable_name = each.key
   value         = each.value
 }
 resource "github_actions_environment_secret" "prod" {
-  for_each        = var.env_secrets_prod != null ? var.env_secrets_prod : {}
+  for_each        = nonsensitive(var.env_secrets_prod != null ? var.env_secrets_prod : {})
   environment     = "prod"
   repository      = github_repository.main.name
   secret_name     = each.key
   plaintext_value = each.value
 }
 resource "github_actions_environment_variable" "prod" {
-  for_each      = var.env_variables_prod != null ? var.env_variables_prod : {}
+  for_each      = nonsensitive(var.env_variables_prod != null ? var.env_variables_prod : {})
   environment   = "prod"
   repository    = github_repository.main.name
   variable_name = each.key
